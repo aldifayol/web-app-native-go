@@ -29,6 +29,9 @@ func main() {
 		w.Write([]byte(data))
 	})
 
+	// chapter 3
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("assets"))))
+
 	address := "localhost:8080"
 	fmt.Printf("server started at %s\n", address)
 	err :=	http.ListenAndServe(address, nil) 
