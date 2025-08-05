@@ -15,10 +15,19 @@ func handlerHello(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(message))
 }
 
-func main() {
+func main() {	
+	// chapter 1
+
 	http.HandleFunc("/", handlerIndex)
 	http.HandleFunc("/index", handlerIndex)
 	http.HandleFunc("/hello", handlerHello)
+
+	// chapter 2
+
+	http.HandleFunc("/again", func(w http.ResponseWriter, r *http.Request) {
+		data := "again"
+		w.Write([]byte(data))
+	})
 
 	address := "localhost:8080"
 	fmt.Printf("server started at %s\n", address)
