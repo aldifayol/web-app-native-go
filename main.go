@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"net/http"
+	"path"
 )
 
 func handlerIndex(w http.ResponseWriter, r *http.Request) {
@@ -15,10 +17,33 @@ func handlerHello(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(message))
 }
 
+// chapter 4
+func handlerHtml(w http.ResponseWriter, r *http.Request) {
+	filepath := path.Join("views", "index.html")
+	tmpl, err := template.ParseFiles(filepath)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError )
+		return
+	}
+
+	fmt.Println(*tmpl)
+
+	var data = map[string]interface{}{
+		"title": "Mastering Go Web",
+		"name": "Aegon",
+	}
+
+	err = tmpl.Execute(w, data)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError )
+	}
+}
+
 func main() {	
 	// chapter 1
 
-	http.HandleFunc("/", handlerIndex)
+	http.HandleFunc("/", handlerHtml)
 	http.HandleFunc("/index", handlerIndex)
 	http.HandleFunc("/hello", handlerHello)
 
@@ -31,6 +56,8 @@ func main() {
 
 	// chapter 3
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("assets"))))
+
+	// chapter 4
 
 	address := "localhost:8080"
 	fmt.Printf("server started at %s\n", address)
