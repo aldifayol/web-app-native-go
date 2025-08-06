@@ -32,11 +32,13 @@ func main() {
 			Gender: "male",
 			Hobbies: []string{"flying", "fvcking"},
 			Info: Info{"Stark Industries", "10880 Malibu Point, 90265"},
+
 		}
 
 		var tmpl = template.Must(template.ParseFiles("views/view.html"))
 		
 		if err := tmpl.Execute(w, person); err != nil {
+
 			http.Error(w, err.Error(), http.StatusInternalServerError )
 		}
 	})
