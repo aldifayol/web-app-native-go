@@ -4,84 +4,41 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
-	"path"
 )
 
-type M map[string]interface{}
-
-// later unused
-/*
-func handlerIndex(w http.ResponseWriter, r *http.Request) {
-	message := "welcome"
-	w.Write([]byte(message))
-}
-*/
-
-func handlerHello(w http.ResponseWriter, r *http.Request) {
-	message := "hello world"
-	w.Write([]byte(message))
+type Info struct {
+	Affiliation string
+	Address string
 }
 
-// chapter 4
-func handlerHtml(w http.ResponseWriter, r *http.Request) {
-	filepath := path.Join("views", "index.html")
-	tmpl, err := template.ParseFiles(filepath)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError )
-		return
-	}
+func (t Info) GetAffiliationDetailInfo() string {
+	return "have 31 divisions"
+}
 
-	fmt.Println(*tmpl)
-
-	var data = map[string]interface{}{
-		"title": "Mastering Go Web",
-		"name": "Aegon",
-	}
-
-	err = tmpl.Execute(w, data)
-
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError )
-	}
+type Person struct {
+	Name string
+	Gender string
+	Hobbies []string
+	Info Info
 }
 
 func main() {	
-	// chapter 4
-	var tmpl, err = template.ParseGlob(("views/*"))
-	if err != nil {
-		panic(err.Error())
-	}
-
-	// chapter 3
+	// serving static files from assets folder
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("assets"))))
 
-	http.HandleFunc("/index", func(w http.ResponseWriter, r *http.Request) {
-		var data = M{"name": "Iron Man"}
-		err := tmpl.ExecuteTemplate(w, "index", data)
-		if err != nil {
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		var person = Person{
+			Name: "Tony Stark",
+			Gender: "male",
+			Hobbies: []string{"flying", "fvcking"},
+			Info: Info{"Stark Industries", "10880 Malibu Point, 90265"},
+		}
+
+		var tmpl = template.Must(template.ParseFiles("views/view.html"))
+		
+		if err := tmpl.Execute(w, person); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError )
 		}
-	})
-
-	http.HandleFunc("/about", func(w http.ResponseWriter, r *http.Request) {
-		var data = M{"name": "Tony Stark"}
-		err := tmpl.ExecuteTemplate(w, "about", data)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError )
-		}
-	})
-
-	// chapter 1
-
-	http.HandleFunc("/", handlerHtml)
-	// http.HandleFunc("/index", handlerIndex)
-	http.HandleFunc("/hello", handlerHello)
-
-	// chapter 2
-
-	http.HandleFunc("/again", func(w http.ResponseWriter, r *http.Request) {
-		data := "again"
-		w.Write([]byte(data))
 	})
 
 	address := ":8080"
