@@ -25,7 +25,7 @@ func main() {
 		var person = Superhero{
             Name:    "Tony Stark",
             Alias:   "Iron Man",
-            Friends: []string{"Thor", "Captain America", "Superman"},
+            Friends: []string{"Thor", "Captain America", "Hulk"},
         }
 
 
