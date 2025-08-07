@@ -21,15 +21,18 @@ func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("assets"))))
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+
 		var person = Superhero{
             Name:    "Tony Stark",
             Alias:   "Iron Man",
             Friends: []string{"Thor", "Captain America", "Superman"},
         }
 
+
 		var tmpl = template.Must(template.ParseFiles("views/view.html"))
 		
 		if err := tmpl.Execute(w, person); err != nil {
+
 			http.Error(w, err.Error(), http.StatusInternalServerError )
 		}
 	})
