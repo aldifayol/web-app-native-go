@@ -6,20 +6,14 @@ import (
 	"net/http"
 )
 
-type Info struct {
-	Affiliation string
-	Address string
+type Superhero struct {
+    Name    string
+    Alias   string
+    Friends []string
 }
 
-func (t Info) GetAffiliationDetailInfo() string {
-	return "have 31 divisions"
-}
-
-type Person struct {
-	Name string
-	Gender string
-	Hobbies []string
-	Info Info
+func (s Superhero) SayHello(from string, message string) string {
+    return fmt.Sprintf("%s said: \"%s\"", from, message)
 }
 
 func main() {	
@@ -27,12 +21,11 @@ func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("assets"))))
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		var person = Person{
-			Name: "Tony Stark",
-			Gender: "male",
-			Hobbies: []string{"flying", "fvcking"},
-			Info: Info{"Stark Industries", "10880 Malibu Point, 90265"},
-		}
+		var person = Superhero{
+            Name:    "Tony Stark",
+            Alias:   "Iron Man",
+            Friends: []string{"Thor", "Captain America", "Superman"},
+        }
 
 		var tmpl = template.Must(template.ParseFiles("views/view.html"))
 		
