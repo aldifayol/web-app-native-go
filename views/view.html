@@ -1,41 +1,11 @@
 <html>
   <head>
-    <title>Learning html/template Actions</title>
+    <title>Learning html/template Functions</title>
   </head>
   <body>
-    <table>
-      <tr>
-        {{/* example how to use actions */}}
-        <td>{{"Name"}}</td>
-        <td>: {{.Name}}</td>
-      </tr>
-      <tr>
-        <td>Gender</td>
-        {{$gender := .Gender}}
-        <td style="text-transform: capitalize">: {{$gender}}</td>
-      </tr>
-      <tr>
-        <td>Hobbies</td>
-        <td>: {{range $index, $elem := .Hobbies}} {{$elem}}, {{end}}</td>
-      </tr>
-      <tr>
-        <td>Affiliation</td>
-        <td>: {{.Info.Affiliation}}</td>
-      </tr>
-      <tr>
-        <td>Affiliation</td>
-        <td>: {{.Info.Affiliation}} ({{.Info.GetAffiliationDetailInfo}})</td>
-      </tr>
-      {{with .Info}}
-      <tr>
-        <td>Address</td>
-        <td>: {{.Address}}</td>
-      </tr>
-      {{end}} {{if eq .Name "Tony Stark"}}
-      <tr>
-        <td colspan="2" style="font-weight: bold">I'm Iron Man!</td>
-      </tr>
-      {{end}}
-    </table>
+    <p>
+    {{html "<h2>Hello</h2>"}}
+    {{html "<h1>Escape String</h1>"}}
+    </p>
   </body>
 </html>
