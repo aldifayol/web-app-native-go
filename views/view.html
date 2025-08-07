@@ -4,8 +4,13 @@
   </head>
   <body>
     <p>
-    {{html "<h2>Hello</h2>"}}
-    {{html "<h1>Escape String</h1>"}}
+      {{html "<h2>Hello</h2>"}}
+      {{html "<h1>Escape String</h1>"}}
+      {{if eq .Name "Tony Stark"}}
+        <p>I'm Iron Man!</p>
+      {{else if ne .Name "Bruce Banner"}}
+        <p>I'm neither Iron Man or Captain America</p>
+      {{end}}
     </p>
   </body>
 </html>
